@@ -1,7 +1,7 @@
 import time
 
-
-def exponential_backoff(func, max_retries=5, delay=1, backoff=2):
+def backoff(func, max_retries=5, delay=1, backoff=2):
+    
     """
     Executes a function with exponential backoff and retry if an exception occurs.
 
