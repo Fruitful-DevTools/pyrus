@@ -1,15 +1,8 @@
-import logging
-import re
-import time
-import random
-import string
-import requests
-
+from . import *
 
 
 def log(msg):
     logging.info(msg)
-
 
 
 def validate_email(email):
@@ -17,16 +10,13 @@ def validate_email(email):
     return re.match(regex, email) is not None
 
 
-
 def get_timestamp():
     return int(time.time())
-
 
 
 def get_random_string(length):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(length))
-
 
 
 def download_file(url, filename):
@@ -35,14 +25,12 @@ def download_file(url, filename):
         f.write(r.content)
 
 
-
 def parse_arguments(args):
     params = {}
     for arg in args:
         key, value = arg.split('=')
         params[key] = value
     return params
-
 
 
 def flatten_list(lst):
