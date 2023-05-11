@@ -1,16 +1,3 @@
-
-class Normalise:
-    pass
-
-
-class Present:
-    pass
-
-
-class Clean:
-    pass
-
-
 class Validate:
     pass
 

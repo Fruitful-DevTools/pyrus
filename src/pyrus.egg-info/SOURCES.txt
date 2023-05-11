@@ -5,6 +5,7 @@ src/pyrus/__init__.py
 src/pyrus/backoff.py
 src/pyrus/cache.py
 src/pyrus/config.py
+src/pyrus/data.py
 src/pyrus/file.py
 src/pyrus/utils.py
 src/pyrus/web.py
@@ -13,7 +14,6 @@ src/pyrus.egg-info/SOURCES.txt
 src/pyrus.egg-info/dependency_links.txt
 src/pyrus.egg-info/top_level.txt
 src/pyrus/ignored/audio.py
-src/pyrus/ignored/data.py
 src/pyrus/ignored/image.py
 src/pyrus/models/__init__.py
 src/pyrus/models/html-classification.py
@@ -21,4 +21,5 @@ src/pyrus/models/unsupervised-continuous-learning.py
 tests/test_backoff.py
 tests/test_cache.py
 tests/test_config.py
+tests/test_data.py
 tests/test_utils.py
