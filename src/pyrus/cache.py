@@ -1,7 +1,7 @@
-from __init__ import *
+from . import *
+
 
 class Cache:
-
     def __init__(self, maxsize=100):
         """
         Initialize Cache class with a maximum cache size.
@@ -14,7 +14,7 @@ class Cache:
             None
         """
         self.maxsize = maxsize
-        self.cache = col.OrderedDict()
+        self.cache = OrderedDict()
 
     def get(self, key):
         """
@@ -52,6 +52,7 @@ class Cache:
         """
         if len(self.cache) >= self.maxsize:
             self.cache.popitem(last=False)
+        
         if ttl is not None:
             self.cache[key] = (value, time.time() + ttl)
         else:

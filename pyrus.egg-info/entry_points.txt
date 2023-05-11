@@ -1,0 +1,3 @@
+[console_scripts]
+another_script = my_package.scripts.script2:main
+my_script = my_package.scripts.script1:main
