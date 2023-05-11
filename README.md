@@ -1,5 +1,7 @@
-# Example Package
+# Pyrus
 
-This is a simple example package. You can use
-[Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
-to write your content.
+Pyrus is IAMMOKZEEEE's personal toolkit of Python modules to manage all kinds of different projects!
+
+## Description
+
+##
