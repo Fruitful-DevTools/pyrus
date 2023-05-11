@@ -1,5 +1,6 @@
 from . import *
 
+
 class Requests:
 
     def __init__(self, base_url):
@@ -21,3 +22,11 @@ class Requests:
             return response
         else:
             print("Error making request:", response.status_code)
+
+class Scrape:
+
+    def __init__(self):
+        pass
+
+    def __call__(self):
+        pass
