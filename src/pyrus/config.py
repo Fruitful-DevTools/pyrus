@@ -1,5 +1,6 @@
 # Package metadata
-__version__ = '1.0.0'
+__name__ = 'pyrus'
+__version__ = '0.0.1'
 __author__ = 'Charlie Marshall'
 __email__ = 'charlie.marshall1996@gmail.com'
 

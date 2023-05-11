@@ -52,6 +52,7 @@ class Cache:
         """
         if len(self.cache) >= self.maxsize:
             self.cache.popitem(last=False)
+        
         if ttl is not None:
             self.cache[key] = (value, time.time() + ttl)
         else:

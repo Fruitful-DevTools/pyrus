@@ -15,6 +15,9 @@ src/pyrus.egg-info/top_level.txt
 src/pyrus/ignored/audio.py
 src/pyrus/ignored/data.py
 src/pyrus/ignored/image.py
+src/pyrus/models/__init__.py
+src/pyrus/models/html-classification.py
+src/pyrus/models/unsupervised-continuous-learning.py
 tests/test_backoff.py
 tests/test_cache.py
 tests/test_config.py

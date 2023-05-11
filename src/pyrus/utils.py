@@ -1,6 +1,6 @@
 from . import *
 
-
+"""
 def log(msg):
     logging.info(msg)
 
@@ -41,3 +41,4 @@ def flatten_list(lst):
         else:
             flattened.append(item)
     return flattened
+"""
