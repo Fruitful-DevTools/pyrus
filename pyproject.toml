@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrus"
+version = "0.0.1"
+authors = [
+  { name="Charlie Marshall", email="charlie.marshall1996@gmail.com" },
+]
+description = "A package of personal tools IAMMOKZEEEE uses in his programs, made available for public use."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/IAMMOKZEEEE/pyrus"
+"Bug Tracker" = "https://github.com/IAMMOKZEEEE/pyrus/issues"
+
+# [tool.poetry.dependencies]
+# pandas = "^1.0"
