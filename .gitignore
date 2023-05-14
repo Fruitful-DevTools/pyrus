@@ -1,0 +1,7 @@
+tests/
+testdata/
+*.egg-info/
+.vscode/
+.DS_Store
+dist/
+style_guide/

@@ -1,0 +1,59 @@
+
+/* Fonts */
+
+h1 {
+    color: #399e56;
+}
+
+.hero-text-body {
+    color: #387b76;
+    font-weight: 550;
+}
+
+h2, h3 {
+    color: #387b76;
+    padding-bottom: 2%;
+}
+
+code{
+    color: #16a194;
+}
+
+.body-text, .feature {
+    margin-top: 2%;
+}
+
+/* Links */
+
+.nav-link:hover, button:hover {
+    color: #399e56
+}
+
+/* Structure */
+
+main .container-fluid {
+    max-width: 50vw;
+    padding-top: 2%;
+}
+
+.row {
+    padding-top: 5%;
+}
+
+
+/* Header */
+
+
+
+/* Main */
+
+/* Forms */
+
+form div{
+    padding-top: 5%;
+}
+
+/* Footer */
+footer {
+    padding-top: 200px;
+}
