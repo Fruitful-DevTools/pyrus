@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.1] - 2023-03-05
+## [0.0.1] - 2023-15-05
+
+### Changed
+- Moved markdowns to docs dir
+- Moved pages files to pages-files dir
+
+## [0.0.1] - 2023-14-05
 
 ### Added
 - Pyrus Github Pages Site
