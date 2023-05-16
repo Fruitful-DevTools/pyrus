@@ -1,8 +1,23 @@
+"""
+This module provides the class FileManager, for reading and writing files of various types.
+It checks the input path for the files type, then performs the correct reading or writing
+operation on the object.
+
+Reading files with FileManager:
+    fm = FileManager('filepath')
+    read_object = fm.read()
+
+Writing files with FileManager:
+    fm = FileManager('filepath')
+    fm.write('data_to_write_to_file', add_date_to_filename="True")
+"""
+
 from . import pyrus_exceptions as pe
-from . import *
+from . import Image, pd, mp, os, docx, AudioSegment, datetime
+
 
 class FileManager:
-    
+
     """
     A utility class for reading and writing various types of files.
 
@@ -14,19 +29,26 @@ class FileManager:
         extension (str): The file extension.
 
     Methods:
-        read(): Reads the file and returns its contents.
-        write(data_to_write_to_file, add_date_to_filename=False): Writes the given data to the file.
-        add_date(): Appends the current date and time to the file name.
-        read_data_table(): Reads a table from a CSV, JSON, or Excel file and returns it as a pandas DataFrame.
-        write_data_table(data_to_write_to_file): Writes a pandas DataFrame to a CSV, JSON, or Excel file.
-        read_img(): Reads an image file and returns it as a PIL Image object.
-        write_img(data_to_write_to_file): Writes a PIL Image object to an image file.
-        read_video(): Reads a video file and returns it as a moviepy.VideoFileClip object.
-        write_video(data_to_write_to_file): Writes a moviepy.VideoFileClip object to a video file.
-        read_audio(): Reads an audio file and returns it as a pydub.AudioSegment object.
-        write_audio(data_to_write_to_file): Writes a pydub.AudioSegment object to an audio file.
-        read_text(): Reads a Microsoft Word document and returns it as a python-docx Document object.
-        write_text(data_to_write_to_file): Writes a python-docx Document object to a Microsoft Word document.
+        - read(): Reads the file and returns its contents.
+        - write(data_to_write_to_file, add_date_to_filename=False): 
+        Writes the given data to the file.
+        - add_date(): Appends the current date and time to the file name.
+        - read_data_table(): Reads a table from a CSV, JSON, or Excel file 
+        and returns it as a pandas DataFrame.
+        - write_data_table(data_to_write_to_file): Writes a pandas DataFrame to a CSV, 
+        JSON, or Excel file.
+        - read_img(): Reads an image file and returns it as a PIL Image object.
+        - write_img(data_to_write_to_file): Writes a PIL Image object to an image file.
+        - read_video(): Reads a video file and returns it as a moviepy.VideoFileClip object.
+        - write_video(data_to_write_to_file): Writes a moviepy.VideoFileClip object to a video file.
+        - read_audio(): Reads an audio file and returns it as a 
+        pydub.AudioSegment object.
+        - write_audio(data_to_write_to_file): Writes a pydub.AudioSegment 
+        object to an audio file.
+        - read_text(): Reads a Microsoft Word document 
+        and returns it as a python-docx Document object.
+        - write_text(data_to_write_to_file): Writes a python-docx Document 
+        object to a Microsoft Word document.
 
     Raises:
         UnsupportedFileTypeError: If the file type is not supported.
@@ -52,7 +74,6 @@ class FileManager:
         'text': {'.doc', '.docx'}
     }
 
-
     def __init__(self, filepath):
         """
         Initialize a FileManager instance with the given filename.
@@ -61,17 +82,26 @@ class FileManager:
         -----------
         filepath: str
             The filepath, including name and extension, of the file to be read or written.
-        """        
+        """
         self.filepath = filepath
         self.path_prefix, self.file_ext = os.path.splitext(filepath)
+        print(self.path_prefix, self.file_ext)
         self.filetype = self.get_filetype()
 
         if self.filetype is None:
-            raise pe.UnsupportedFileTypeError(f"The file type of '{self.filepath}' is not supported. File types must be one of {self.SUPPORTED_EXTENSIONS[self.filetype]}.")
-        
+            raise pe.UnsupportedFileTypeError(
+                f"{self.filepath}is not supported. Must be one of"
+                + self.SUPPORTED_EXTENSIONS[self.filetype])
+
     def get_filetype(self):
-        
-        return next((filetype for filetype, ext in self.SUPPORTED_EXTENSIONS.items() if self.file_ext in ext), None)
+        """
+        Returns the file type of the given file, based on its extension.
+
+        :return: a string representing the file type, or None if the extension is not supported.
+        """
+        return next((filetype for filetype,
+                    ext in self.SUPPORTED_EXTENSIONS.items() if self.file_ext in ext),
+                    None)
 
     def read(self):
         """
@@ -81,10 +111,10 @@ class FileManager:
         --------
         file: object
             The contents of the file.
-        """        
+        """
         if self.filetype == 'data_table':
             self.read_data_table()
-        
+
         elif self.filetype == 'image':
             file = self.read_img()
 
@@ -98,12 +128,12 @@ class FileManager:
             file = self.read_text()
 
         else:
-            raise pe.UnsupportedFileTypeError(f"The file type of '{self.filepath}' is not supported.")
-        
-        return file
-        
-    def write(self, data_to_write_to_file, add_date_to_filename=False):
+            raise pe.UnsupportedFileTypeError(
+                f"The file type of '{self.filepath}' is not supported.")
 
+        return file
+
+    def write(self, data_to_write_to_file, add_date_to_filename=False):
         """
         Writes the given data to the file.
 
@@ -163,7 +193,7 @@ class FileManager:
 
         if self.filetype == 'data_table':
             self.write_data_table(data_to_write_to_file)
-        
+
         elif self.filetype == 'image':
             self.write_img(data_to_write_to_file)
 
@@ -177,24 +207,25 @@ class FileManager:
             self.write_text(data_to_write_to_file)
 
         else:
-            raise pe.UnsupportedFileTypeError(f"The file type of '{self.filepath}' is not supported.")
-        
+            raise pe.UnsupportedFileTypeError(
+                f"The file type of '{self.filepath}' is not supported.")
+
     def add_date(self):
         """
         Adds the current date and time to the filename 
         of the file being managed by FileManager object.
-        """        
+        """
         date_string = str(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
 
         self.filepath = f'{self.path_prefix}_{date_string}.{self.file_ext}'
-    
+
     def read_data_table(self):
         """
         Reads a file and returns a pandas DataFrame object.
-        
+
         Returns:
         file (pandas.DataFrame): DataFrame object created by reading the file.
-        
+
         Raises:
         UnsupportedFileTypeError: If the file type is not supported.
         FileNotFoundError: If the file cannot be found in the specified filepath.
@@ -203,201 +234,215 @@ class FileManager:
         try:
             if self.file_ext == 'csv':
                 file = pd.read_csv(self.filepath)
-            
+
             elif self.file_ext == 'json':
                 file = pd.read_json(self.filepath)
 
-            elif self.file_ext == 'xlsx' or self.file_ext == 'xls':
+            elif self.file_ext in ('xlsx', 'xls'):
                 file = pd.read_excel(self.filepath)
 
-        
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Could not find file in specified path {self.filepath}. Please check sepcified path.")
-        
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to read {self.filepath}. Please check path, or contact PC administrator.")
-        
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(
+                f"Could not find file in specified path {self.filepath}.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(f"Y {self.filepath}.") from exc
         return file
 
     def write_data_table(self, data_to_write_to_file):
         """
         Writes the data provided to a file with a filename specified by FileManager object.
-        
+
         Args:
         data_to_write_to_file (pandas.DataFrame): DataFrame object containing the data to write.
-        
+
         Raises:
         UnsupportedFileTypeError: If the file type is not supported.
         """
-        try:        
+        try:
             if self.file_ext == 'csv':
                 data_to_write_to_file.to_csv(self.filepath)
-            
+
             elif self.file_ext == 'json':
                 data_to_write_to_file.to_json(self.filepath)
 
-            elif self.file_ext == 'xlsx' or self.file_ext == 'xls':
+            elif self.file_ext in ('xlsx', 'xls'):
                 data_to_write_to_file.to_excel(self.filepath)
-        
-        except FileExistsError:
-            raise FileExistsError(f"File with the path {self.file_ext} already exists. Please check filepath.")
-        
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to write {self.filepath}. Please check path, or contact PC administrator.")
+
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"{self.file_ext} already exists.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(
+                f"It appears you do not have permission to write {self.filepath}.") from exc
 
     def read_img(self):
         """
         Reads an image file and returns an Image object.
-        
+
         Returns:
         file (PIL.Image.Image): Image object created by reading the file.
-        
+
         Raises:
         UnsupportedFileTypeError: If the file type is not supported.
         FileNotFoundError: If the file cannot be found in the specified filepath.
         """
-        try:   
+        try:
             file = Image.open(self.filepath)
-        
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Could not find file in specified path {self.filepath}. Please check sepcified path.")
-        
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to read {self.filepath}. Please check path, or contact PC administrator.")
 
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(
+                f"Could not find file in specified path {self.filepath}.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(f"Y {self.filepath}.") from exc
         return file
-    
+
     def write_img(self, data_to_write_to_file):
         """
         Writes the image data provided to a file with a filename specified by FileManager object.
-        
+
         Args:
         data_to_write_to_file (PIL.Image.Image): Image object containing the data to write.
-        
+
         Raises:
         UnsupportedFileTypeError: If the file type is not supported.
-        """   
-        try:     
+        """
+        try:
             data_to_write_to_file.save(self.filepath)
-        
-        except FileExistsError:
-            raise FileExistsError(f"File with the path {self.file_ext} already exists. Please check filepath.")       
-        
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to write {self.filepath}. Please check path, or contact PC administrator.")         
+
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"{self.file_ext} already exists. Please check filepath.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(
+                f"It appears you do not have permission to write {self.filepath}.") from exc
 
     def read_video(self):
         """
         Reads a video file and returns a VideoFileClip object.
-        
-        Returns:
-        file (moviepy.video.VideoFileClip.VideoFileClip): VideoFileClip object created by reading the file.
-        
-        Raises:
-        UnsupportedFileTypeError: If the file type is not supported.
-        FileNotFoundError: If the file cannot be found in the specified filepath.
-        """
-        try:        
-            file = VideoFileClip(self.filepath)
-        
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Could not find file in specified path {self.filepath}. Please check sepcified path.")
 
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to read {self.filepath}. Please check path, or contact PC administrator.")       
-        
+        Returns:
+            file (moviepy.video.VideoFileClip.VideoFileClip): 
+            VideoFileClip object created by reading the file.
+
+        Raises:
+            UnsupportedFileTypeError: If the file type is not supported.
+            FileNotFoundError: If the file cannot be found in the specified filepath.
+        """
+        try:
+            file = mp.VideoFileClip(self.filepath)
+
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(
+                f"Could not find file in specified path {self.filepath}.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(f"Y {self.filepath}.") from exc
         return file
+
     def write_video(self, data_to_write_to_file):
         """
         Writes the video data provided to a file with a filename specified by FileManager object.
-        
+
         Args:
-        data_to_write_to_file (moviepy.video.VideoFileClip.VideoFileClip): VideoFileClip object containing the data to write.
-        
+            data_to_write_to_file (moviepy.video.VideoFileClip.VideoFileClip): 
+            VideoFileClip object containing the data to write.
+
         Raises:
-        UnsupportedFileTypeError: If the file type is not supported.
+            UnsupportedFileTypeError: If the file type is not supported.
         """
-        try:        
+        try:
             data_to_write_to_file.write_videofile(self.filepath)
-        
-        except FileExistsError:
-            raise FileExistsError(f"File with the path {self.file_ext} already exists. Please check filepath.")
-        
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to write {self.filepath}. Please check path, or contact PC administrator.")
+
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"{self.file_ext} already exists. Please check filepath.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(
+                f"It appears you do not have permission to write {self.filepath}.") from exc
 
     def read_audio(self):
         """
         Reads an audio file and returns an AudioSegment object.
-        
+
         Returns:
         file (pydub.AudioSegment.AudioSegment): AudioSegment object created by reading the file.
-        
+
         Raises:
         UnsupportedFileTypeError: If the file type is not supported.
         FileNotFoundError: If the file cannot be found in the specified filepath.
-        """    
-        try:    
+        """
+        try:
             file = AudioSegment.from_file(self.filepath, format=self.file_ext)
-        
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Could not find file in specified path {self.filepath}. Please check sepcified path.")        
 
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to read {self.filepath}. Please check path, or contact PC administrator.")
-        
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(
+                f"Could not find file in specified path {self.filepath}.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(f"Y {self.filepath}.") from exc
         return file
-    
+
     def write_audio(self, data_to_write_to_file):
         """
         Writes the audio data provided to a file with a filename specified by FileManager object.
-        
-        Args:
-        data_to_write_to_file (pydub.AudioSegment.AudioSegment): AudioSegment object containing the data to write.
-        
-        Raises:
-        UnsupportedFileTypeError: If the file type is not supported.
-        """
-        try:        
-            data_to_write_to_file.export(self.filepath, format=self.file_ext)
-        
-        except FileExistsError:
-            raise FileExistsError(f"File with the path {self.file_ext} already exists. Please check filepath.")
 
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to write {self.filepath}. Please check path, or contact PC administrator.")
+        Args:
+            data_to_write_to_file (pydub.AudioSegment.AudioSegment): 
+            AudioSegment object containing the data to write.
+
+        Raises:
+            UnsupportedFileTypeError: If the file type is not supported.
+        """
+        try:
+            data_to_write_to_file.export(self.filepath, format=self.file_ext)
+
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"{self.file_ext} already exists.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(
+                f"It appears you do not have permission to write {self.filepath}.") from exc
 
     def read_text(self):
         """
         Reads a text file and returns a docx.Document object.
-        
+
         Returns:
         file (docx.document.Document): Document object created by reading the file.
-        
+
         Raises:
         UnsupportedFileTypeError: If the file type is not supported.
         FileNotFoundError: If the file cannot be found in the specified filepath.
-        """  
-        try:      
+        """
+        try:
             file = docx.Document(self.filepath)
-        
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Could not find file in specified path {self.filepath}. Please check sepcified path.")        
 
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to read {self.filepath}. Please check path, or contact PC administrator.")
-        
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(
+                f"Could not find specified path {self.filepath}.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(
+                f"You do not have permission to read {self.filepath}.") from exc
         return file
-    
+
     def write_text(self, data_to_write_to_file):
         """
         Writes a docx Document object to a Word document file.
         """
-        try:        
+        try:
             data_to_write_to_file.save(self.filepath)
-        
-        except FileExistsError:
-            raise FileExistsError(f"File with the path {self.file_ext} already exists. Please check filepath.")
-        
-        except PermissionError:
-            raise PermissionError(f"It appears you do not have permission to write {self.filepath}. Please check path, or contact PC administrator.")
+
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"{self.file_ext} already exists. Check filepath.") from exc
+
+        except PermissionError as exc:
+            raise PermissionError(
+                f"You do not have permission to write {self.filepath}") from exc

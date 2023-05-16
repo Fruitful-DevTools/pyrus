@@ -1,13 +1,19 @@
+"""
+This module contains unit tests for the FileManager class in file_manager.py.
+
+The tests cover basic functionality such as reading and writing files, 
+handling file types, and handling errors.
+"""
+
 import os
-import pandas as pd
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from pyrus.file_manager import FileManager
 import tempfile
 import unittest
-from PIL import Image
-from pyrus.file_manager import FileManager
-import sys
 import curses
-sys.path.append('C:\\Users\\mok_z\\Documents\\GitHub\\pyrus\\src\\pyrus\\')
-
+from PIL import Image
+import pandas as pd
 
 class TestFileManager(unittest.TestCase):
 
@@ -78,7 +84,8 @@ class TestFileManager(unittest.TestCase):
         self.file_manager = FileManager(filename)
         with self.subTest(msg="Test adding date to content"):
             self.file_manager.write(filename, add_date_to_filename=True)
-            with open(self.file_manager.filepath, "r") as f:
+            
+            with open(self.file_manager.filepath, "r", encoding='UTF-8') as f:
                 content = f.read()
                 self.assertIn(self.file_manager.date_added, content)
                 date_added = True
