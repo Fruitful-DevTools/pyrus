@@ -1,7 +1,6 @@
 import unittest
 import str_manager as sm
 
-
 class StringNormaliserTests(unittest.TestCase):
 
     def subtester(self, test_values):
