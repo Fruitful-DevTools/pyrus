@@ -1,5 +1,5 @@
 import unittest
-import str_manager as sm
+from pyrus import str_manager as sm
 
 class StringNormaliserTests(unittest.TestCase):
 
@@ -78,7 +78,7 @@ class StringNormaliserTests(unittest.TestCase):
             ("ÁČÇÈÑTÉÐ ßÞÉÇÏÀL ÇHÁRÁÇTÉRS", "áčçèñtéd ßþéçïàl çháráçtérs"),
             ("ÛÑÎÇØÐÊ ÄŠÇÏÏ ÊÑÇØÐÏÑG", "ûñîçøðê äšçïï êñçøðïñg"),
             ("     ÛÑÎÇØÐÊ   ", "ûñîçøðê"),  # Leading/trailing whitespace with accented characters
-            ("    ÛÑÎÇØÐÊ     ÄŠÇÏÏ     ÊÑÇØÐÏÑG    ", "ûñîçøðê äšçïï êñçøðïñg"),  # Multiple operations with accented characters and whitespace
+            ("\n    ÛÑÎÇØÐÊ     ÄŠÇÏÏ     ÊÑÇØÐÏÑG    ", "ûñîçøðê äšçïï êñçøðïñg"),  # Multiple operations with accented characters and whitespace
         ]
         
         self.subtester(test_values)
