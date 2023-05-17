@@ -9,10 +9,11 @@ Classes:
     TitleStringPresenter():
     NameStringPresenter():
 """
+from unidecode import unidecode
 import unicodedata
-import re
+import regex as re
 
-def string_normaliser(string):
+def string_normaliser(string, *special_chars, normalise_encoding=False):
     """Normalises string data.
     
     This method normalises string data by performing several operations:
@@ -26,30 +27,33 @@ def string_normaliser(string):
         normalised_string (str): The normalized string data.
     """
     
-    
     # Turn the entire string to lowercase
     lowercase_string = string.lower()
-
-    # Remove special characters from the string
-    pattern = r'[^a-zA-Z0-9\s]'
-    no_special_characters_string = re.sub(pattern, '', lowercase_string)
     
     # Strip the string of all whitespace
-    stripped_string = no_special_characters_string.strip()
+    stripped_string = lowercase_string.strip()
     
     # Turn double spaces into single spaces
     single_spaced_string = stripped_string.replace('  ', ' ')
     
-    # Transform string into canonical representation
-    unicode_normalised_string = unicodedata.normalize('NFKD', single_spaced_string)
+    if normalise_encoding:
+        # Transform string into canonical representation
+        unicode_normalised_string = unicodedata.normalize('NFKD', single_spaced_string)
+
+        # Encode string into ASCII format,
+        # Ignore letters that can't be turned into ASCII
+        single_spaced_string = unidecode(unicode_normalised_string)
+
+    pattern = re.compile(r'[^\p{L}\s]')
     
-    # Encode string into ASCII format,
-    # Ignore letters that can't be turned into ASCII
-    encoded_string = unicode_normalised_string.encode('ASCII', 'ignore')
+    # Remove special characters from the string
+    normalised_string = pattern.sub('', single_spaced_string)
     
     # Decode string back to UTF-8 format
-    normalised_string = encoded_string.decode()
+    # normalised_string = encoded_string.decode()
     return normalised_string
+
+print(string_normaliser("  Café  has  spaces!  "))
 
 class Presenter():
 
@@ -76,6 +80,7 @@ class TitlePresenter(Presenter):
     def __init__(self, string):
         self.string = string
         super().__init__(string)
+
     def present_title(self):
 
         string = self.present()
