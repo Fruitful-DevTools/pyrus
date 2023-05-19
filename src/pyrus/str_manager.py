@@ -19,6 +19,7 @@ librarian = librarian.Librarian()
 
 whitespace = string.whitespace
 
+
 def string_normaliser(string, normalise_encoding=False):
     """Normalises string data.
 
@@ -64,11 +65,13 @@ def string_normaliser(string, normalise_encoding=False):
 
     return normalised_string
 
+
 class Presenter:
 
     def __init__(self):
-        self.articles_conjunctions_prepositions = librarian.get_dictionary()
-    
+        self.articles_conjunctions_prepositions = librarian.lookup(
+            collection='articles_conjunctions_prepositions')
+
     def present_title(self, string_data, linguistic_convention=None):
 
         title = string_normaliser(string_data)
@@ -92,42 +95,42 @@ class Presenter:
             title = ' '.join(cased_title)
 
         elif linguistic_convention in ('it', 'pt', 'no', 'sv', 'da', 'fi'):
-            cased_title = self.italo_portuguese_nordic_convention(words_to_case)
+            cased_title = self.italo_portuguese_nordic_convention(
+                words_to_case)
             title = ' '.join(cased_title)
-        
+
         elif linguistic_convention is None:
             cased_title = self.no_convention(words_to_case)
             title = ' '.join(cased_title)
-        
+
         return title
-    
+
     def no_convention(self, words_to_case):
-        cased_title_words = [word if word in self.articles_conjunctions_prepositions else 
-                            '&' if word == 'and' and '&' not 
-                            in words_to_case else word.title() for word in words_to_case]
+        cased_title_words = [word if word in self.articles_conjunctions_prepositions else
+                             '&' if word == 'and' and '&' not
+                             in words_to_case else word.title() for word in words_to_case]
         return cased_title_words
 
-
     def english_convention(self, words_to_case):
-        cased_title_words = [word if word in self.articles_conjunctions_prepositions['en'] else 
-                            '&' if word == 'and' and '&' not 
-                            in words_to_case else word.title() for word in words_to_case]
-        
+        cased_title_words = [word if word in self.articles_conjunctions_prepositions['en'] else
+                             '&' if word == 'and' and '&' not
+                             in words_to_case else word.title() for word in words_to_case]
+
         return cased_title_words
 
     def french_convention(self, words_to_case):
         cased_title_words = [
-        word.title() if word not in self.articles_conjunctions_prepositions['fr'] or i == 0
-        else word
-        for i, word in enumerate(words_to_case)
+            word.title() if word not in self.articles_conjunctions_prepositions['fr'] or i == 0
+            else word
+            for i, word in enumerate(words_to_case)
         ]
         return cased_title_words
-    
+
     def german_dutch_convention(self, words_to_case):
         """
         This method takes the lower case title, and capitalises the first letter of each word,
         in conformation with title convention in German and Dutch:
-        
+
         Articles, conjunctions, and prepositions are typically not 
         capitalized unless they are the first or last word, or if they have four or more letters.
 
@@ -138,16 +141,16 @@ class Presenter:
             cased_title_words   
         """
         cased_title_words = [
-        word.title() if word not in self.articles_conjunctions_prepositions['de'] or i in (0, len(words_to_case) - 1)
-        else word
-        for i, word in enumerate(words_to_case)
+            word.title() if word not in self.articles_conjunctions_prepositions['de'] or i in (0, len(words_to_case) - 1)
+            else word
+            for i, word in enumerate(words_to_case)
         ]
 
         return cased_title_words
 
     def spanish_convention(self, words_to_case):
         cased_title_words = [
-            word.title() if word not in self.articles_conjunctions_prepositions['es'] or i in(0, len(words_to_case) -1) 
+            word.title() if word not in self.articles_conjunctions_prepositions['es'] or i in (0, len(words_to_case) - 1)
             else word
             for i, word in enumerate(words_to_case)
         ]
@@ -155,18 +158,18 @@ class Presenter:
 
     def italo_portuguese_nordic_convention(self, words_to_case):
         cased_title_words = [
-        word.title() if word not in self.articles_conjunctions_prepositions['it'] 
-        or word not in self.articles_conjunctions_prepositions['pt']
-        or word not in self.articles_conjunctions_prepositions['no'] 
-        or word not in self.articles_conjunctions_prepositions['sv']
-        or word not in self.articles_conjunctions_prepositions['da']
-        or word not in self.articles_conjunctions_prepositions['fi']
-        or i in(0, len(words_to_case) -1) 
-        else word
-        for i, word in enumerate(words_to_case)
+            word.title() if word not in self.articles_conjunctions_prepositions['it']
+            or word not in self.articles_conjunctions_prepositions['pt']
+            or word not in self.articles_conjunctions_prepositions['no']
+            or word not in self.articles_conjunctions_prepositions['sv']
+            or word not in self.articles_conjunctions_prepositions['da']
+            or word not in self.articles_conjunctions_prepositions['fi']
+            or i in (0, len(words_to_case) - 1)
+            else word
+            for i, word in enumerate(words_to_case)
         ]
         return cased_title_words
-        
+
 
 class NamePresenter(Presenter):
     pass
