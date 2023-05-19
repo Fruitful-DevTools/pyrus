@@ -13,9 +13,11 @@ from unidecode import unidecode
 import unicodedata
 import regex as re
 import string
+from pyrus import librarian
+
+librarian = librarian.Librarian()
 
 whitespace = string.whitespace
-
 
 def string_normaliser(string, normalise_encoding=False):
     """Normalises string data.
@@ -62,125 +64,66 @@ def string_normaliser(string, normalise_encoding=False):
 
     return normalised_string
 
-def email_normaliser(email):
+class Presenter:
+
+    def __init__(self):
+        self.articles_conjunctions_prepositions = librarian.get_dictionary()
     
-    lowercase_email = email.lower()
-    normalised_email = re.sub(r'[^a-z0-9@.]', '', lowercase_email)
+    def present_title(self, string_data, linguistic_convention=None):
 
-    return normalised_email
+        title = string_normaliser(string_data)
 
-class Presenter():
+        words_to_case = title.split()
 
-    def __init__(self, string):
-        self.string = string
-
-    def present(self):
-        string = string_normaliser(self.string)
-        return string
-    
-"""
-Conventions on Articles, Conjunctions, Prepositions:
-
-    Group 1: Articles, conjunctions, and prepositions are usually not capitalized in titles, unless they are the first word or part of a proper noun.
-
-    French
-
-    Group 2: Articles, conjunctions, and prepositions are typically not capitalized unless they are the first or last word, or if they have four or more letters.
-
-    German
-    Dutch
-
-    Group 3: Articles, conjunctions, and prepositions are generally not capitalized in titles, unless they are the first or last word, or if they are stressed as part of the title's style or emphasis.
-
-    Spanish
-
-    Group 4: Articles, conjunctions, and prepositions are typically not capitalized in titles, except when they are the first or last word, or if they have special emphasis or are part of proper nouns.
-
-    Italian
-    Portuguese
-
-    Group 5: Articles, conjunctions, and prepositions are generally not capitalized in titles unless they are the first or last word, or if they have special emphasis or are part of proper nouns.
-
-    Norwegian
-    Swedish
-    Danish
-    Finnish
-"""
-
-class TitlePresenter(Presenter):
-
-    TITLE_EXCEPTIONS = {}
-    def __init__(self, string):
-        self.string = string
-        super().__init__(string)
-
-    def present_title(self, language=None):
-
-        title = self.present()
-
-        lowercase_title_words = title.split()
-
-        if language == 'en':
-            cased_title = self.english_convention(lowercase_title_words)
+        if linguistic_convention == 'en':
+            cased_title = self.english_convention(words_to_case)
             title = ' '.join(cased_title)
 
-        elif language == 'fr':
-            cased_title = self.french_convention(lowercase_title_words)
+        elif linguistic_convention == 'fr':
+            cased_title = self.french_convention(words_to_case)
             title = ' '.join(cased_title)
 
-        elif language in ('de', 'nl'):
-            cased_title = self.german_dutch_convention(lowercase_title_words)
+        elif linguistic_convention in ('de', 'nl'):
+            cased_title = self.german_dutch_convention(words_to_case)
             title = ' '.join(cased_title)
 
-        elif language == 'es':
-            cased_title = self.spanish_convention(lowercase_title_words)
+        elif linguistic_convention == 'es':
+            cased_title = self.spanish_convention(words_to_case)
             title = ' '.join(cased_title)
 
-        elif language in ('it', 'pt'):
-            cased_title = self.italo_portuguese_convention(lowercase_title_words)
-            title = ' '.join(cased_title)
-
-        elif language in ('no', 'sv', 'da', 'fi'):
-            cased_title = self.nordic_convention(lowercase_title_words)
+        elif linguistic_convention in ('it', 'pt', 'no', 'sv', 'da', 'fi'):
+            cased_title = self.italo_portuguese_nordic_convention(words_to_case)
             title = ' '.join(cased_title)
         
-        elif language is None:
-            cased_title = self.no_convention(lowercase_title_words)
+        elif linguistic_convention is None:
+            cased_title = self.no_convention(words_to_case)
             title = ' '.join(cased_title)
         
         return title
     
-    def no_convention(self, lowercase_title_words):
-        return lowercase_title_words
+    def no_convention(self, words_to_case):
+        cased_title_words = [word if word in self.articles_conjunctions_prepositions else 
+                            '&' if word == 'and' and '&' not 
+                            in words_to_case else word.title() for word in words_to_case]
+        return cased_title_words
 
 
-    def english_convention(self, lowercase_title_words):
+    def english_convention(self, words_to_case):
+        cased_title_words = [word if word in self.articles_conjunctions_prepositions['en'] else 
+                            '&' if word == 'and' and '&' not 
+                            in words_to_case else word.title() for word in words_to_case]
         
-        # Turn non-exception lowercase_title_words in title case
-        for word in lowercase_title_words:
+        return cased_title_words
 
-            # Find corresponding index of word in lowercase_title_words list
-            i = lowercase_title_words.index(str(word))
-
-            # If the word is 'and' and there are no ampersands in the lowercase_title_words list,
-            # change the word to ampersand
-            if word == 'and' and '&' not in lowercase_title_words:
-                lowercase_title_words[i] = '&'
-
-            # If the word is an exception, leave as lower case.
-            if word in self.TITLE_EXCEPTIONS['en']:
-                continue
-
-            # Otherwise, change to title case.
-            else:
-                lowercase_title_words[i] = word.title()
-        
-        return lowercase_title_words
-
-    def french_convention(self, lowercase_title_words):
-        return lowercase_title_words
+    def french_convention(self, words_to_case):
+        cased_title_words = [
+        word.title() if word not in self.articles_conjunctions_prepositions['fr'] or i == 0
+        else word
+        for i, word in enumerate(words_to_case)
+        ]
+        return cased_title_words
     
-    def german_dutch_convention(self, lowercase_title_words):
+    def german_dutch_convention(self, words_to_case):
         """
         This method takes the lower case title, and capitalises the first letter of each word,
         in conformation with title convention in German and Dutch:
@@ -189,39 +132,40 @@ class TitlePresenter(Presenter):
         capitalized unless they are the first or last word, or if they have four or more letters.
 
         Args:
-            lowercase_title_words (list): The words of the title in lowercase, put into a list, ready to be capitalised.
+            words_to_case (list): The words of the title in lowercase, put into a list, ready to be capitalised.
 
         Returns:
             cased_title_words   
         """
         cased_title_words = [
-        word.title() if word not in self.TITLE_EXCEPTIONS['de'] or i in (0, len(lowercase_title_words) - 1)
+        word.title() if word not in self.articles_conjunctions_prepositions['de'] or i in (0, len(words_to_case) - 1)
         else word
-        for i, word in enumerate(lowercase_title_words)
+        for i, word in enumerate(words_to_case)
         ]
 
         return cased_title_words
 
-    def spanish_convention(self, lowercase_title_words):
+    def spanish_convention(self, words_to_case):
         cased_title_words = [
-            word.title() if word not in self.TITLE_EXCEPTIONS['es'] or i in(0, len(lowercase_title_words) -1) 
+            word.title() if word not in self.articles_conjunctions_prepositions['es'] or i in(0, len(words_to_case) -1) 
             else word
-            for i, word in enumerate(lowercase_title_words)
+            for i, word in enumerate(words_to_case)
         ]
-
         return cased_title_words
 
-    def italo_portuguese_convention(self, lowercase_title_words):
+    def italo_portuguese_nordic_convention(self, words_to_case):
         cased_title_words = [
-        word.title() if word not in self.TITLE_EXCEPTIONS['it'] or word not in self.TITLE_EXCEPTIONS['pt'] or i in(0, len(lowercase_title_words) -1) 
+        word.title() if word not in self.articles_conjunctions_prepositions['it'] 
+        or word not in self.articles_conjunctions_prepositions['pt']
+        or word not in self.articles_conjunctions_prepositions['no'] 
+        or word not in self.articles_conjunctions_prepositions['sv']
+        or word not in self.articles_conjunctions_prepositions['da']
+        or word not in self.articles_conjunctions_prepositions['fi']
+        or i in(0, len(words_to_case) -1) 
         else word
-        for i, word in enumerate(lowercase_title_words)
+        for i, word in enumerate(words_to_case)
         ]
-
         return cased_title_words
-
-    def nordic_convention(self, lowercase_title_words):
-        return lowercase_title_words
         
 
 class NamePresenter(Presenter):

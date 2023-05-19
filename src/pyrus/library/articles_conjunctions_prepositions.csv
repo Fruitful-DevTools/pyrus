@@ -1,0 +1,12 @@
+﻿language,articles_conjunctions_prepositions
+da,"{'inde i', 'en', 'til', 'af', 'mellem', 'så', 'med', 'ved siden af', 'fra', 'rundt', 'udenfor', 'under', 'uden', 'når', 'efter', 'og', 'bag', 'eller', 'i', 'over', 'på', 'før', 'gennem', 'men', 'ved', 'et', 'hvis', 'selvom', 'for'}"
+de,"{'aber', 'nach', 'seit', 'von', 'zu', 'die', 'bei', 'oder', 'mit', 'ab', 'auf', 'das', 'doch', 'an', 'der', 'weil', 'vor', 'und', 'denn', 'aus', 'da', 'in', 'bis'}"
+en,"{'a', 'the', 'but', 'of', 'an', 'or', 'so', 'yet', 'and', 'for'}"
+es,"{'ante', 'sin', 'pero', 'en', 'las', 'para', 'tras', 'antes', 'so', 'el', 'bajo', 'cuando', 'o', 'por', 'los', 'sobre', 'desde', 'mediante', 'después', 'entre', 'con', 'sino', 'hasta', 'contra', 'hacia', 'e', 'durante', 'según', 'ni', 'a', 'y', 'que', 'u', 'mientras', 'la', 'de', 'cabe'}"
+fi,"{'keskellä', 'on', 'yli', 'ennen', 'vieressä', 'kun', 'ilman', 'takana', 'vai', 'tai', 'olla', 'koska', 'ulkopuolella', 'läpi', 'jälkeen', 'kanssa', 'alla', 'ovat', 'ole', 'sekä', 'mutta', 'ja', 'sisällä', 'olivat', 'vaikka', 'oli'}"
+fr,"{'par', 'sous', 'avec', 'ou', 'dans', 'devant', 'mais', 'en', 'sur', 'derrière', 'depuis', ""jusqu'à"", 'les', 'loin de', 'le', 'parce que', 'sans', 'car', 'or', 'près de', 'pour', 'envers', 'entre', 'à', 'ni', 'et', 'chez', 'la', 'de', 'donc'}"
+it,"{'gli', 'il', 'del', 'nel', 'dopo', 'fino', 'le', 'sul', 'che', 'secondo', 'dai', 'dal', 'tra', 'ne', 'fra', 'su', 'conforme', 'anche', 'o', 'ad', 'col', 'mentre', 'con', 'quando', 'prima', 'e', 'i', 'per', 'di', 'a', 'senza', 'lo', 'dei', 'al', 'ma', 'come', 'però', 'da', 'in', 'la'}"
+nl,"{'uit', 'om', 'tot', 'en', 'maar', 'met', 'naar', 'door', 'voor', 'of', 'dat', 'bij', 'dan', 'van', 'op', 'als', 'te', 'een', 'het', 'in', 'de'}"
+no,"{'uten', 'utenfor', 'til', 'gjennom', 'så', 'med', 'fra', 'rundt', 'under', 'ved siden av', 'når', 'mellom', 'og', 'av', 'bak', 'eller', 'selv om', 'i', 'over', 'på', 'etter', 'før', 'men', 'ved', 'inni', 'hvis', 'for'}"
+pt,"{'enquanto', 'segundo', 'sem', 'porém', 'ou', 'ante', 'após', 'até', 'sob', 'para', 'os', 'antes', 'como', 'contudo', 'conforme', 'em', 'depois', 'o', 'por', 'sobre', 'desde', 'através', 'atrás', 'exceto', 'entre', 'mas', 'quando', 'com', 'e', 'durante', 'a', 'as', 'que', 'todavia', 'de'}"
+sv,"{'om', 'bredvid', 'innan', 'över', 'en', 'så', 'utanför', 'med', 'när', 'och', 'under', 'ett', 'efter', 'av', 'genom', 'trots att', 'runt', 'vid', 'eller', 'i', 'på', 'men', 'till', 'från', 'bakom', 'för', 'mellan', 'utan'}"
